@@ -1,0 +1,109 @@
+﻿<Window x:Class="DomZdravlja1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DomZdravlja1"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="544" Width="800">
+    <Grid Margin="0,0,0,-6">
+        <Label Content="Izaberi firme" HorizontalAlignment="Left" Margin="67,69,0,0" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="157,71,0,0" VerticalAlignment="Top" Width="120"
+                  Name="comboBox" ItemsSource="{Binding}" SelectionChanged="comboBox_SelectionChanged">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Naziv}"/>
+                        <TextBlock Text=" - "/>
+                        <TextBlock Text="{Binding Sediste}" FontStyle="Italic"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <DataGrid Margin="67,100,352,227" Name="dataGrid" ItemsSource="{Binding}" AutoGenerateColumns="False">
+            <DataGrid.ContextMenu>
+                <ContextMenu Tag="{Binding ElementName=dataGrid, Path=SelectedItem.PacijentID}">
+                    <MenuItem Header="Unesi novi popust" Click="MenuItem_Click"/>
+                    <MenuItem Header="Obrisi pacijenta" Click="MenuItem_Click_1"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Ime" Binding="{Binding Ime}" Width="70"/>
+                <DataGridTextColumn Header="Prezime" Binding="{Binding Prezime}" Width="70"/>
+                <DataGridTextColumn Header="Datum izmene" Binding="{Binding DatumIzmene}" Width="130"/>
+            </DataGrid.Columns>
+
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <Border BorderThickness="1" Background="LightSlateGray" Padding="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Naziv paketa"/>
+                            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Naziv, Mode=OneWay}" IsReadOnly="True"/>
+
+                            <TextBlock Grid.Column="0" Grid.Row="1" Text="Cena paketa"/>
+                            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Cena, Mode=OneWay}" IsReadOnly="True"/>
+
+                            <TextBlock Grid.Column="0" Grid.Row="2" Text="Popust"/>
+                            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Popust, Mode=OneWay}" IsReadOnly="True"/>
+
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+        </DataGrid>
+
+        <Label Content="Ukupno ima:" HorizontalAlignment="Left" Margin="67,318,0,0" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="149,323,0,0" TextWrapping="Wrap" Text="{Binding}" VerticalAlignment="Top"
+                   Name="textBlockUkupno"/>
+        <GroupBox Header="Novi popust" Margin="513,104,10,189" IsEnabled="False" Name="groupBox">
+            <Grid>
+                <Label Content="Sifra pacijenta" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top"/>
+                <Label Content="Novi popust" HorizontalAlignment="Left" Margin="15,106,0,0" VerticalAlignment="Top"/>
+                <TextBox HorizontalAlignment="Left" Margin="99,29,0,0" TextWrapping="Wrap" 
+                         Text="{Binding ElementName=dataGrid,Path=SelectedItem.PacijentID ,Mode=OneWay}" 
+                         VerticalAlignment="Top" Width="120" IsReadOnly="True" Name="tbSifraPacijenta"/>
+                <TextBox HorizontalAlignment="Left" Margin="99,110,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
+                         Name="tbNoviPopust"/>
+                <Button Content="Izmeni" HorizontalAlignment="Left" Margin="99,154,0,0" 
+                        VerticalAlignment="Top" Height="23" Width="97" Name="btnIzmeni" Click="btnIzmeni_Click"/>
+
+            </Grid>
+        </GroupBox>
+
+        <RadioButton Content="Maksimalni popust" HorizontalAlignment="Left" Margin="64,392,0,0" VerticalAlignment="Top"
+                     Name="radioMax" Checked="radioMax_Checked"/>
+        <RadioButton Content="Minimalni popust" HorizontalAlignment="Left" Margin="67,426,0,0" VerticalAlignment="Top"
+                     Name="radioMin" Checked="radioMin_Checked"/>
+        <ListBox Margin="195,375,400,54" ItemsSource="{Binding}" Name="listBoxPopust">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding PacijentID}"/>
+                        <TextBlock Text=", "/>
+                        <TextBlock Text="{Binding Naziv}"/>
+                        <TextBlock Text=", "/>
+                        <TextBlock Text="{Binding Popust}" FontWeight="Bold"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Menu Name="meni" Margin="10,10,635,486">
+            <MenuItem Header="Rad sa pacijentima" Height="20" Width="158">
+                <MenuItem Name="meniUnos" Header="Unesi novog" Click="meniUnos_Click"/>
+            </MenuItem>
+        </Menu>
+
+    </Grid>
+</Window>

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="DomZdravlja" Class="DomZdravljaDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=DESKTOP-ABSG413\SQLEXPRESS;Initial Catalog=DomZdravlja;Integrated Security=True;Encrypt=False" SettingsObjectName="DomZdravlja1.Properties.Settings" SettingsPropertyName="DomZdravljaConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Firme" Member="Firmes">
+    <Type Name="Firme">
+      <Column Name="FirmaID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Naziv" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Sediste" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Association Name="Firme_Paketi" Member="Paketis" ThisKey="FirmaID" OtherKey="FirmaID" Type="Paketi" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Pacijenti" Member="Pacijentis">
+    <Type Name="Pacijenti">
+      <Column Name="PacijentID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ime" Type="System.String" DbType="NVarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="Prezime" Type="System.String" DbType="NVarChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="DatumIzmene" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Popust" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PaketID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Paketi_Pacijenti" Member="Paketi" ThisKey="PaketID" OtherKey="PaketID" Type="Paketi" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Paketi" Member="Paketis">
+    <Type Name="Paketi">
+      <Column Name="PaketID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Naziv" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="Cena" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
+      <Column Name="FirmaID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Paketi_Pacijenti" Member="Pacijentis" ThisKey="PaketID" OtherKey="PaketID" Type="Pacijenti" />
+      <Association Name="Firme_Paketi" Member="Firme" ThisKey="FirmaID" OtherKey="FirmaID" Type="Firme" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
